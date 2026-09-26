@@ -259,6 +259,7 @@ class ArhamApp {
 
     // 9. Setup Brochure / Request Modal
     this.setupBrochureModal();
+    this.setupFullSpecsModal();
 
     // 10. Re-initialize Lucide Icons
     if (window.lucide) {
@@ -326,18 +327,23 @@ class ArhamApp {
     const data = ROBOTS_DATA[robotId];
     if (!data) return;
 
-    // 1. Title & Badges
-    document.getElementById('robot-name').textContent = data.name;
+    // 1. Title & Badges (with animation)
+    const nameEl = document.getElementById('robot-name');
+    nameEl.textContent = data.name;
+    nameEl.classList.remove('animate-reveal-fast');
+    void nameEl.offsetWidth; // trigger reflow
+    nameEl.classList.add('animate-reveal-fast');
+
     document.getElementById('robot-category-badge').textContent = data.category;
     document.getElementById('robot-status-badge').textContent = data.badge;
     document.getElementById('robot-tagline').textContent = data.tagline;
     document.getElementById('robot-description').textContent = data.description;
 
-    // 2. Quick Stat Pills (Light Theme)
+    // 2. Quick Stat Pills (Animated staggered)
     const statsContainer = document.getElementById('robot-quick-stats');
     if (statsContainer) {
-      statsContainer.innerHTML = data.quickStats.map((stat) => `
-        <div class="spec-box-light flex items-center gap-2.5">
+      statsContainer.innerHTML = data.quickStats.map((stat, idx) => `
+        <div class="spec-box-light flex items-center gap-2.5 animate-reveal-fast" style="animation-delay: ${idx * 75}ms; animation-fill-mode: both;">
           <div class="p-2 rounded-lg bg-[rgba(124,173,62,0.15)] text-[#7CAD3E] flex-shrink-0">
             <i data-lucide="${stat.icon}" class="w-4 h-4"></i>
           </div>
@@ -352,14 +358,14 @@ class ArhamApp {
     // 3. Render Subtab Content
     this.renderSubtabContent();
 
-    // 4. Real Photos Carousel / Thumbnails
+    // 4. Real Photos Carousel / Thumbnails (Animated staggered)
     const photosContainer = document.getElementById('robot-photos-carousel');
     if (photosContainer) {
-      photosContainer.innerHTML = data.photos.map((p) => `
-        <div class="photo-card-light h-24 flex-shrink-0 w-36 relative rounded-lg overflow-hidden group cursor-pointer" onclick="ArhamApp.openLightbox('${p.url}', '${p.caption}')">
+      photosContainer.innerHTML = data.photos.map((p, idx) => `
+        <div class="photo-card-light h-28 flex-shrink-0 w-44 relative rounded-xl overflow-hidden group hover-zoom-container hover-glow cursor-pointer shadow-md animate-reveal-fast" style="animation-delay: ${(idx * 75) + 150}ms; animation-fill-mode: both;" onclick="ArhamApp.openLightbox('${p.url}', '${p.caption}')">
           <img src="${p.url}" alt="${p.caption}" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.9)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-2">
-            <span class="text-[11px] text-white font-medium line-clamp-1">${p.caption}</span>
+          <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.95)] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all flex items-end p-3">
+            <span class="text-[11px] text-white font-bold leading-tight drop-shadow-md line-clamp-2">${p.caption}</span>
           </div>
         </div>
       `).join('');
@@ -618,6 +624,105 @@ class ArhamApp {
     });
   }
 
+
+  setupFullSpecsModal() {
+    const openBtn = document.getElementById('btn-open-full-specs');
+    const modal = document.getElementById('full-specs-modal');
+    const closeBtn = document.getElementById('modal-specs-close');
+
+    if (openBtn && modal) {
+      openBtn.addEventListener('click', () => {
+        this.renderModalSpecs();
+        modal.classList.remove('hidden');
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+      });
+    }
+
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
+      });
+    }
+
+    // Modal Subtabs Trigger
+    const subtabs = modal ? modal.querySelectorAll('.spec-subtab-trigger') : [];
+    subtabs.forEach((st) => {
+      st.addEventListener('click', () => {
+        const tabKey = st.getAttribute('data-subtab');
+        if (tabKey) {
+          this.currentSubtab = tabKey;
+          subtabs.forEach((s) => s.classList.remove('active'));
+          st.classList.add('active');
+          this.renderModalSpecs();
+        }
+      });
+    });
+  }
+
+  renderModalSpecs() {
+    const data = ROBOTS_DATA[this.currentRobot];
+    if (!data) return;
+
+    document.getElementById('modal-robot-title').textContent = `${data.name} Specifications`;
+    document.getElementById('modal-robot-tagline').textContent = data.tagline;
+
+    const modalContent = document.getElementById('modal-specs-content');
+    if (!modalContent) return;
+
+    if (this.currentSubtab === 'features') {
+      modalContent.innerHTML = `
+        <div class="space-y-4">
+          <div>
+            <h5 class="text-xs font-mono uppercase tracking-wider text-[#7CAD3E] font-bold mb-3">Specialized Capabilities</h5>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              ${data.features.map(f => `
+                <li class="flex items-start gap-2.5 text-xs text-[#334155] p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                  <i data-lucide="check-circle" class="w-4 h-4 text-[#7CAD3E] flex-shrink-0 mt-0.5"></i>
+                  <span>${f}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+
+          <div>
+            <h5 class="text-xs font-mono uppercase tracking-wider text-[#7CAD3E] font-bold mt-4 mb-3">Target Applications</h5>
+            <div class="flex flex-wrap gap-2">
+              ${data.applications.map(a => `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F1F5F9] border border-[#CBD5E1] text-[#0F172A]">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-[#7CAD3E]"></i>
+                  ${a}
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      const items = data.subtabs[this.currentSubtab] || data.subtabs['dimensions'] || [];
+      modalContent.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          ${items.map(it => `
+            <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-center">
+              <span class="text-[10px] text-[#64748B] uppercase font-mono tracking-wider font-semibold">${it.key}</span>
+              <span class="text-[#0F172A] font-bold text-sm mt-1">${it.val}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  }
+
   setupBrochureModal() {
     const btnRequest = document.querySelectorAll('.btn-request-brochure');
     const modal = document.getElementById('brochure-modal');
@@ -664,3 +769,138 @@ class ArhamApp {
 document.addEventListener('DOMContentLoaded', () => {
   window.ArhamApp = new ArhamApp();
 });
+
+
+// ------------------------------------------
+// PREMIUM ANIMATIONS SETUP
+// ------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+  // Intersection Observer for Reveal Animations
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15
+  };
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target); // Reveal only once
+      }
+    });
+  }, observerOptions);
+
+  const revealElements = document.querySelectorAll('.reveal-up, .reveal-blur');
+
+  // Force all reveal elements to be visible immediately so content is NEVER blank
+  document.querySelectorAll('.reveal-up, .reveal-blur, .stagger-table-row').forEach(el => {
+    el.classList.add('is-visible');
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+    el.style.filter = 'none';
+  });
+
+  revealElements.forEach(el => revealObserver.observe(el));
+
+  // Parallax Effect for Images
+  const parallaxImages = document.querySelectorAll('.parallax-img');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(() => {
+        const scrolled = window.scrollY;
+        parallaxImages.forEach(img => {
+          const speed = img.dataset.parallaxSpeed || 0.15;
+          const yPos = -(scrolled * speed);
+          img.style.transform = `translateY(${yPos}px) scale(1.05)`; // scale slightly to avoid borders showing
+        });
+      });
+    }, { passive: true });
+  }
+});
+
+
+// ------------------------------------------
+// GSAP & ADVANCED CINEMATIC INTERACTIONS
+// ------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+
+  // 1. Dynamic Header Scroll Shrink
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      header?.classList.add('scrolled-nav');
+    } else {
+      header?.classList.remove('scrolled-nav');
+    }
+  }, { passive: true });
+
+  // 2. GSAP Animations Integration
+  if (window.gsap) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero Entrance Animation
+    gsap.from('#hero h1', {
+      duration: 1.2,
+      y: 40,
+      opacity: 0,
+      ease: 'power3.out',
+      delay: 0.2
+    });
+
+    gsap.from('#hero .parallax-img', {
+      duration: 2,
+      scale: 1.2,
+      opacity: 0,
+      ease: 'power2.out'
+    });
+
+
+  }
+
+  // 3. 3D Tilt Card Interaction
+  const tiltCards = document.querySelectorAll('.tilt-card');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    tiltCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        card.style.transform = `perspective(1000px) rotateX(${-y / 25}deg) rotateY(${x / 25}deg) scale(1.02)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      });
+    });
+  }
+
+  // 4. Magnetic Buttons Effect
+  const magneticBtns = document.querySelectorAll('.btn-magnetic');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    magneticBtns.forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = 'translate(0px, 0px)';
+      });
+    });
+  }
+
+});
+
+  // 5. Ambient Cursor Follower Glow
+  const cursorGlow = document.getElementById('cursor-glow');
+  if (cursorGlow && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.addEventListener('mousemove', (e) => {
+      requestAnimationFrame(() => {
+        cursorGlow.style.left = `${e.clientX}px`;
+        cursorGlow.style.top = `${e.clientY}px`;
+      });
+    }, { passive: true });
+  }

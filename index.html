@@ -34,10 +34,17 @@
   <script src="assets/vendor/three.min.js"></script>
   <script src="assets/vendor/OrbitControls.js"></script>
 
+  <!-- GSAP & ScrollTrigger Animation Engines -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-[#F8FAFC] text-[#0F172A] antialiased min-h-screen">
+<body class="bg-[#F8FAFC] text-[#0F172A] antialiased min-h-screen relative">
+
+  <!-- Ambient Cursor Glow Spotlight -->
+  <div id="cursor-glow" class="hidden md:block"></div>
 
   <!-- =========================================================================
        NAVIGATION BAR (Sleek Light Enterprise Bar, Prominent Logo, Spacious Layout)
@@ -45,7 +52,7 @@
   <!-- =========================================================================
        NAVIGATION BAR (Floating Pill Navbar - Perfectly Balanced)
        ========================================================================= -->
-  <header class="fixed top-3 sm:top-4 left-0 right-0 z-50 px-3 sm:px-6 pointer-events-none">
+  <header class="fixed top-3 sm:top-4 left-0 right-0 z-50 px-3 sm:px-6 pointer-events-none nav-slide-down">
     <div class="pointer-events-auto max-w-7xl mx-auto bg-white/95 backdrop-blur-md rounded-full shadow-[0_10px_35px_rgba(0,0,0,0.08)] border border-slate-200/90 px-4 sm:px-5 py-2 flex items-center justify-between transition-all duration-300">
       
       <!-- Prominent Brand Logo Badge -->
@@ -59,46 +66,34 @@
       </a>
 
       <!-- Desktop Nav Links (Stacked Icon Top + Label Bottom) -->
-      <nav class="hidden lg:flex items-center gap-1 xl:gap-2.5">
+      <nav class="hidden lg:flex items-center gap-2 xl:gap-5">
         <!-- Home (Active Tab) -->
-        <a href="#hero" class="flex flex-col items-center justify-center px-3 py-1 rounded-full bg-[#7CAD3E]/15 text-[#7CAD3E] transition-all group">
-          <i data-lucide="home" class="w-4 h-4 text-[#7CAD3E]"></i>
+        <a href="#hero" class="flex flex-col items-center justify-center px-4 py-1.5 rounded-full bg-[#7CAD3E]/15 text-[#7CAD3E] transition-all group">
+          <i data-lucide="home" class="w-4 h-4 text-[#7CAD3E] mb-0.5"></i>
           <span class="text-[11px] font-extrabold leading-tight">Home</span>
         </a>
 
         <!-- 3D Robots & Specs -->
-        <a href="#specifications" class="flex flex-col items-center justify-center px-2.5 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
-          <i data-lucide="bot" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors"></i>
+        <a href="#specifications" class="flex flex-col items-center justify-center px-3 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
+          <i data-lucide="bot" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors mb-0.5"></i>
           <span class="text-[11px] font-semibold leading-tight whitespace-nowrap">3D Robots & Specs</span>
         </a>
 
-        <!-- Clients -->
-        <a href="#trusted-by" class="flex flex-col items-center justify-center px-2.5 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
-          <i data-lucide="users" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors"></i>
-          <span class="text-[11px] font-semibold leading-tight">Clients</span>
-        </a>
-
         <!-- Field Operations -->
-        <a href="#field-operations" class="flex flex-col items-center justify-center px-2.5 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
-          <i data-lucide="settings" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors"></i>
+        <a href="#field-operations" class="flex flex-col items-center justify-center px-3 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
+          <i data-lucide="settings" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors mb-0.5"></i>
           <span class="text-[11px] font-semibold leading-tight whitespace-nowrap">Field Operations</span>
         </a>
 
-        <!-- Technology -->
-        <a href="#technology" class="flex flex-col items-center justify-center px-2.5 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
-          <i data-lucide="lightbulb" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors"></i>
-          <span class="text-[11px] font-semibold leading-tight">Technology</span>
-        </a>
-
         <!-- ROI Calculator -->
-        <a href="#calculator" class="flex flex-col items-center justify-center px-2.5 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
-          <i data-lucide="bar-chart-3" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors"></i>
+        <a href="#calculator" class="flex flex-col items-center justify-center px-3 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
+          <i data-lucide="bar-chart-3" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors mb-0.5"></i>
           <span class="text-[11px] font-semibold leading-tight whitespace-nowrap">ROI Calculator</span>
         </a>
 
         <!-- Contact -->
-        <a href="#contact" class="flex flex-col items-center justify-center px-2.5 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
-          <i data-lucide="mail" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors"></i>
+        <a href="#contact" class="flex flex-col items-center justify-center px-3 py-1 text-slate-600 hover:text-[#7CAD3E] transition-colors group">
+          <i data-lucide="mail" class="w-4 h-4 text-slate-500 group-hover:text-[#7CAD3E] transition-colors mb-0.5"></i>
           <span class="text-[11px] font-semibold leading-tight">Contact</span>
         </a>
       </nav>
@@ -166,71 +161,77 @@
     <!-- =========================================================================
          SECTION 1: HERO SECTION
          ========================================================================= -->
-    <section id="hero" class="relative py-14 md:py-20 hero-gradient-bg bg-light-pattern border-b border-slate-200">
+    <section id="hero" class="scroll-mt-28 sm:scroll-mt-36 relative min-h-[95vh] flex items-center justify-center pt-28 pb-20 overflow-hidden bg-[#0A1924]">
+      <!-- Parallax Background Image -->
+      <div class="absolute inset-0 z-0 bg-zoom-hover">
+        <img src="assets/images/hydrocarbon-robots.webp" alt="Arham Oil Tank Cleaning Robots" class="w-full h-full object-cover parallax-img opacity-50" data-parallax-speed="0.15">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-[#0A1924]/80 to-transparent"></div>
+        <div class="absolute inset-0 bg-[#0A1924]/30 backdrop-blur-[2px]"></div>
+      </div>
+
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         
         <!-- Status Pill -->
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-300 shadow-sm mb-6">
+        <div class="reveal-up inline-flex items-center gap-2 px-5 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-xl mb-6">
           <span class="pulsing-dot-green"></span>
-          <span class="text-xs uppercase font-mono tracking-wider text-[#334155] font-semibold">ATEX Zone-0 / Non-Man Entry Certified Robotics</span>
+          <span class="text-xs uppercase font-mono tracking-wider text-slate-200 font-semibold">ATEX Zone-0 / Non-Man Entry Certified</span>
         </div>
 
         <!-- Main Headline -->
-        <h1 class="heading-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-[#0F172A] max-w-5xl mx-auto leading-tight mb-5">
-          Leading Hazardous Space Robotics <br class="hidden sm:inline">
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#173042] via-[#0284C7] to-[#7CAD3E]">
-            Zero Human Entry. Zero Life Loss.
+        <h1 class="heading-display reveal-blur text-5xl sm:text-7xl lg:text-8xl font-extrabold text-white max-w-5xl mx-auto leading-[1.1] mb-6 drop-shadow-2xl">
+          Leading Hazardous Space <br class="hidden sm:inline">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#7CAD3E] to-[#8fdb4e]">
+            Zero Human Entry.
           </span>
         </h1>
 
         <!-- Subtitle -->
-        <p class="text-base sm:text-lg text-[#475569] max-w-3xl mx-auto mb-8 leading-relaxed font-medium">
-          Engineered by IIT (ISM) Dhanbad petroleum engineers, Arham Oil manufactures intrinsically safe robotic crawlers and amphibious dredgers to eliminate confined-space human exposure in crude oil storage tanks, chemical vessels, and toxic lagoons worldwide.
+        <p class="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-medium reveal-up delay-100 drop-shadow-md">
+          Engineered by IIT (ISM) Dhanbad petroleum engineers, Arham Oil manufactures intrinsically safe robotic crawlers and amphibious dredgers to eliminate confined-space human exposure in crude oil storage tanks worldwide.
         </p>
 
         <!-- CTA Buttons -->
-        <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
-          <a href="#specifications" class="btn-unibose-primary">
-            <span>Explore 3D Robots & Specs</span>
-            <i data-lucide="box" class="w-4 h-4"></i>
+        <div class="flex flex-wrap items-center justify-center gap-5 mb-16 reveal-up delay-200">
+          <a href="#specifications" class="bg-[#7CAD3E] hover:bg-[#6b9933] text-white px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider flex items-center gap-2 shadow-[0_0_25px_rgba(124,173,62,0.5)] hover:scale-105 transition-all">
+            <span>Explore 3D Robots</span>
+            <i data-lucide="box" class="w-5 h-5"></i>
           </a>
-          <button class="btn-request-brochure btn-unibose-secondary">
-            <i data-lucide="file-text" class="w-4 h-4 text-[#7CAD3E]"></i>
-            <span>Request Technical Brochure</span>
+          <button class="btn-request-brochure bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white px-8 py-3.5 rounded-full font-bold text-sm uppercase tracking-wider flex items-center gap-2 hover:scale-105 transition-all">
+            <i data-lucide="file-text" class="w-5 h-5 text-[#7CAD3E]"></i>
+            <span>Technical Brochure</span>
           </button>
         </div>
 
         <!-- Metric Badges Row -->
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5 max-w-5xl mx-auto pt-6 border-t border-slate-200">
-          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <div class="text-xl sm:text-2xl font-bold font-mono text-[#0F172A]">1,000,000+</div>
-            <div class="text-[11px] text-[#64748B] uppercase font-mono font-semibold mt-0.5">m³ Sludge Processed</div>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 max-w-5xl mx-auto pt-8 border-t border-white/10 reveal-blur delay-300">
+          <div class="p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover-glow group cursor-default transition-all">
+            <div class="text-2xl sm:text-3xl font-bold font-mono text-white drop-shadow-md group-hover:scale-110 transition-transform">1M+</div>
+            <div class="text-[11px] text-[#7CAD3E] uppercase font-mono font-bold mt-1 tracking-wider">m³ Processed</div>
           </div>
-          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <div class="text-xl sm:text-2xl font-bold font-mono text-[#16A34A]">ZERO</div>
-            <div class="text-[11px] text-[#64748B] uppercase font-mono font-semibold mt-0.5">Confined Space Risk</div>
+          <div class="p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover-glow group cursor-default transition-all">
+            <div class="text-2xl sm:text-3xl font-bold font-mono text-white drop-shadow-md group-hover:scale-110 transition-transform">ZERO</div>
+            <div class="text-[11px] text-[#7CAD3E] uppercase font-mono font-bold mt-1 tracking-wider">Life Risk</div>
           </div>
-          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <div class="text-xl sm:text-2xl font-bold font-mono text-[#0F172A]">40% – 60%</div>
-            <div class="text-[11px] text-[#64748B] uppercase font-mono font-semibold mt-0.5">Downtime Cut</div>
+          <div class="p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover-glow group cursor-default transition-all">
+            <div class="text-2xl sm:text-3xl font-bold font-mono text-white drop-shadow-md group-hover:scale-110 transition-transform">60%</div>
+            <div class="text-[11px] text-[#7CAD3E] uppercase font-mono font-bold mt-1 tracking-wider">Downtime Cut</div>
           </div>
-          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <div class="text-xl sm:text-2xl font-bold font-mono text-[#0284C7]">50 BAR</div>
-            <div class="text-[11px] text-[#64748B] uppercase font-mono font-semibold mt-0.5">AdaptiveJet™ Jetting</div>
+          <div class="p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover-glow group cursor-default transition-all">
+            <div class="text-2xl sm:text-3xl font-bold font-mono text-white drop-shadow-md group-hover:scale-110 transition-transform">50 BAR</div>
+            <div class="text-[11px] text-[#7CAD3E] uppercase font-mono font-bold mt-1 tracking-wider">Jetting</div>
           </div>
-          <div class="col-span-2 md:col-span-1 p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
-            <div class="text-xl sm:text-2xl font-bold font-mono text-[#16A34A]">95%+</div>
-            <div class="text-[11px] text-[#64748B] uppercase font-mono font-semibold mt-0.5">Oil Recovery Rate</div>
+          <div class="col-span-2 md:col-span-1 p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 hover-glow group cursor-default transition-all">
+            <div class="text-2xl sm:text-3xl font-bold font-mono text-white drop-shadow-md group-hover:scale-110 transition-transform">100m</div>
+            <div class="text-[11px] text-[#7CAD3E] uppercase font-mono font-bold mt-1 tracking-wider">Umbilical Range</div>
           </div>
         </div>
-
       </div>
     </section>
 
     <!-- =========================================================================
          SECTION 2: TRUSTED BY CLIENTS
          ========================================================================= -->
-    <section id="trusted-by" class="py-10 bg-white border-b border-slate-200">
+    <section id="trusted-by" class="scroll-mt-28 sm:scroll-mt-36 py-10 bg-white border-b border-slate-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         
         <div class="flex items-center justify-center gap-2 mb-6">
@@ -240,33 +241,101 @@
           </span>
         </div>
 
-        <!-- High-Contrast Clean White Client Cards -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <!-- High-Contrast Clean White Client Cards (Marquee) -->
+        <div class="marquee-container mt-8 reveal-up">
+          <div class="marquee-content">
+            <!-- Set 1 -->
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-ioc.png" alt="Indian Oil Corporation Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-bpcl.png" alt="Bharat Petroleum Corporation Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-hpcl.png" alt="Hindustan Petroleum Corporation Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-oilindia.png" alt="Oil India Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-cairn.png" alt="Cairn Oil & Gas">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-vedanta.png" alt="Vedanta Resources">
+            </div>
+            <!-- Set 2 (Duplicate for infinite loop) -->
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-ioc.png" alt="Indian Oil Corporation Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-bpcl.png" alt="Bharat Petroleum Corporation Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-hpcl.png" alt="Hindustan Petroleum Corporation Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-oilindia.png" alt="Oil India Limited">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-cairn.png" alt="Cairn Oil & Gas">
+            </div>
+            <div class="client-logo-card flex-shrink-0 w-32 sm:w-40 hover:scale-110 transition-transform cursor-pointer">
+              <img src="assets/images/client-vedanta.png" alt="Vedanta Resources">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SECTION 2.5: INTERACTIVE ROBOT ANATOMY (2D HOTSPOTS)
+         ========================================================================= -->
+    <section class="py-16 md:py-24 bg-white relative border-b border-slate-200 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#7CAD3E] mb-2 font-bold reveal-up">
+            <i data-lucide="crosshair" class="w-4 h-4"></i>
+            <span>System Architecture</span>
+          </div>
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-[#0F172A] tracking-tight reveal-blur delay-100">
+            Anatomy of the MUSHAQ 2.0
+          </h2>
+          <p class="mt-4 text-[#475569] text-base reveal-up delay-200">
+            Hover over the glowing markers to explore the intrinsically safe hardware engineering that makes zero-man entry a reality.
+          </p>
+        </div>
+
+        <div class="relative max-w-4xl mx-auto reveal-blur delay-300">
+          <img src="assets/images/robot-cutout.webp" alt="MUSHAQ 2.0 Crawler Anatomy" class="w-full h-auto drop-shadow-2xl">
           
-          <div class="client-logo-card">
-            <img src="assets/images/client-ioc.png" alt="Indian Oil Corporation Limited">
+          <!-- Hotspots -->
+          <div class="hotspot-container" style="position: absolute; top: 15%; left: 45%;">
+            <div class="hotspot">
+              <div class="hotspot-info">High-Pressure AdaptiveJet™ Manifold (Up to 50 BAR)</div>
+            </div>
           </div>
-
-          <div class="client-logo-card">
-            <img src="assets/images/client-bpcl.png" alt="Bharat Petroleum Corporation Limited">
+          <div class="hotspot-container" style="position: absolute; top: 35%; left: 75%;">
+            <div class="hotspot">
+              <div class="hotspot-info">Explosion-Proof Dual HD Camera Suite</div>
+            </div>
           </div>
-
-          <div class="client-logo-card">
-            <img src="assets/images/client-hpcl.png" alt="Hindustan Petroleum Corporation Limited">
+          <div class="hotspot-container" style="position: absolute; top: 70%; left: 20%;">
+            <div class="hotspot">
+              <div class="hotspot-info">Nitrile-Cleated Heavy Duty Hydraulic Tracks</div>
+            </div>
           </div>
-
-          <div class="client-logo-card">
-            <img src="assets/images/client-oilindia.png" alt="Oil India Limited">
+          <div class="hotspot-container" style="position: absolute; top: 85%; left: 55%;">
+            <div class="hotspot">
+              <div class="hotspot-info">Twin Spiral Hardened Steel Sludge Augers</div>
+            </div>
           </div>
-
-          <div class="client-logo-card">
-            <img src="assets/images/client-cairn.png" alt="Cairn Oil & Gas">
+          <div class="hotspot-container" style="position: absolute; top: 40%; left: 10%;">
+            <div class="hotspot">
+              <div class="hotspot-info">100m Kevlar-Reinforced Umbilical Tether</div>
+            </div>
           </div>
-
-          <div class="client-logo-card">
-            <img src="assets/images/client-vedanta.png" alt="Vedanta Resources">
-          </div>
-
         </div>
 
       </div>
@@ -275,7 +344,7 @@
     <!-- =========================================================================
          SECTION 3: 3D INTERACTIVE ROBOTS & SPECIFICATIONS
          ========================================================================= -->
-    <section id="specifications" class="py-12 md:py-16 bg-[#F8FAFC] relative">
+    <section id="specifications" class="scroll-mt-28 sm:scroll-mt-36 py-12 md:py-16 bg-[#F8FAFC] relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header & Robot Switcher -->
@@ -285,7 +354,7 @@
               <i data-lucide="cpu" class="w-4 h-4"></i>
               <span>3D Models & Certified Specifications</span>
             </div>
-            <h2 class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight reveal-up">
               Interactive 3D Robot Engineering
             </h2>
           </div>
@@ -384,67 +453,42 @@
 
           </div>
 
-          <!-- RIGHT: COMPACT, TABBED SPECIFICATIONS PANEL (5 COLS) -->
+          <!-- RIGHT: SLEEK, UN-CLUTTERED HIGH-TECH SPECIFICATIONS PANEL (5 COLS) -->
           <div class="lg:col-span-5 flex flex-col gap-4">
             
-            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-md">
-              
+            <div class="bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-xl relative overflow-hidden tilt-card">
+              <!-- Decorative Accent Bar -->
+              <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#7CAD3E] via-[#0284C7] to-[#7CAD3E]"></div>
+
               <!-- Header Badges -->
-              <div class="flex items-center justify-between gap-2 mb-3">
-                <span id="robot-category-badge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[rgba(124,173,62,0.12)] text-[#7CAD3E] border border-[rgba(124,173,62,0.3)]">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span id="robot-category-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#7CAD3E]/15 text-[#7CAD3E] border border-[#7CAD3E]/30">
                   Flagship In-Tank Robot
                 </span>
-                <span id="robot-status-badge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[rgba(2,132,199,0.12)] text-[#0284C7] border border-[rgba(2,132,199,0.3)]">
+                <span id="robot-status-badge" class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#0284C7]/15 text-[#0284C7] border border-[#0284C7]/30">
                   ATEX Zone-0 Certified
                 </span>
               </div>
 
               <!-- Name & Tagline -->
-              <h3 id="robot-name" class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-0.5">MUSHAQ 2.0</h3>
-              <p id="robot-tagline" class="text-xs font-mono text-[#7CAD3E] mb-2 font-bold">Intrinsically Safe ATEX Zone-0 Tank Cleaning Crawler</p>
-              <p id="robot-description" class="text-xs text-[#475569] leading-relaxed mb-4 font-medium">
+              <h3 id="robot-name" class="text-3xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight mb-1">MUSHAQ 2.0</h3>
+              <p id="robot-tagline" class="text-xs font-mono text-[#7CAD3E] mb-3 font-bold">Intrinsically Safe ATEX Zone-0 Tank Cleaning Crawler</p>
+              <p id="robot-description" class="text-xs sm:text-sm text-[#475569] leading-relaxed mb-6 font-medium">
                 Arham Oil’s flagship compact non-man entry crawler engineered specifically for confined space storage tanks.
               </p>
 
-              <!-- 4 Quick Stats Grid -->
-              <div id="robot-quick-stats" class="grid grid-cols-2 gap-2.5 mb-5"></div>
+              <!-- 4 Core Quick Stats Grid -->
+              <div id="robot-quick-stats" class="grid grid-cols-2 gap-3 mb-6"></div>
 
-              <!-- Specification Sub-Tabs -->
-              <div class="border-b border-slate-200 flex gap-1 overflow-x-auto mb-4 scrollbar-thin">
-                <button class="spec-subtab-trigger active" data-subtab="dimensions">
-                  <i data-lucide="ruler" class="w-3.5 h-3.5 inline mr-1"></i>
-                  <span>Dimensions & Build</span>
-                </button>
-                <button class="spec-subtab-trigger" data-subtab="hydraulics">
-                  <i data-lucide="droplet" class="w-3.5 h-3.5 inline mr-1"></i>
-                  <span>Hydraulics & Jetting</span>
-                </button>
-                <button class="spec-subtab-trigger" data-subtab="safety">
-                  <i data-lucide="shield" class="w-3.5 h-3.5 inline mr-1"></i>
-                  <span>ATEX & Safety</span>
-                </button>
-                <button class="spec-subtab-trigger" data-subtab="vision">
-                  <i data-lucide="eye" class="w-3.5 h-3.5 inline mr-1"></i>
-                  <span>LiDAR & Vision</span>
-                </button>
-                <button class="spec-subtab-trigger" data-subtab="features">
-                  <i data-lucide="check-circle" class="w-3.5 h-3.5 inline mr-1"></i>
-                  <span>Capabilities</span>
-                </button>
-              </div>
-
-              <!-- Tab Content Area -->
-              <div id="specs-tab-content" class="min-h-[210px] mb-4"></div>
-
-              <!-- Direct Actions -->
-              <div class="flex gap-2.5 pt-3 border-t border-slate-200">
-                <a href="#contact" class="btn-unibose-primary flex-1 text-center text-xs justify-center font-bold">
-                  <span>Inquire Robot</span>
-                  <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              <!-- Direct Actions Bar -->
+              <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-slate-200">
+                <a href="#contact" class="bg-[#7CAD3E] hover:bg-[#6b9933] text-white px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:scale-105 transition-all flex-1 btn-magnetic">
+                  <span>Inquire Model</span>
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </a>
-                <button class="btn-request-brochure btn-unibose-secondary flex-1 justify-center text-xs">
-                  <i data-lucide="download" class="w-3.5 h-3.5 text-[#7CAD3E]"></i>
-                  <span>Download Spec Sheet</span>
+                <button id="btn-open-full-specs" class="bg-slate-100 hover:bg-slate-200 text-[#0F172A] border border-slate-300 px-5 py-3 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all flex-1 btn-magnetic">
+                  <i data-lucide="layers" class="w-4 h-4 text-[#7CAD3E]"></i>
+                  <span>Full Tech Specs</span>
                 </button>
               </div>
 
@@ -457,79 +501,196 @@
       </div>
     </section>
 
+    
+    <!-- =========================================================================
+         SECTION 3.5: PINNED HORIZONTAL ROBOTICS SHOWCASE (GSAP SCROLLTRIGGER)
+         ========================================================================= -->
+    <section id="pinned-showcase" class="relative bg-[#0A1924] text-white overflow-hidden py-20 border-t border-b border-[#173042] scroll-mt-28 sm:scroll-mt-36">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center">
+        <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#7CAD3E] mb-2 font-bold px-3 py-1 bg-white/5 rounded-full border border-white/10">
+          <i data-lucide="layers" class="w-4 h-4"></i>
+          <span>Robotic Fleet Lineup</span>
+        </div>
+        <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          Next-Gen Hazardous Fleet Showcase
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2 max-w-xl mx-auto">
+          Scroll down to explore our ATEX certified non-man entry robotic systems in action.
+        </p>
+      </div>
+
+      <!-- 3-Column Responsive Grid Container (Natural Smooth Page Scrolling) -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          
+          <!-- Card 1: MUSHAQ 2.0 -->
+          <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 lg:p-7 flex flex-col justify-between hover-glow tilt-card relative group transition-all">
+            <div class="flex items-center justify-between mb-5">
+              <span class="px-3 py-1 bg-[#7CAD3E]/20 border border-[#7CAD3E]/40 text-[#7CAD3E] text-xs font-mono font-bold rounded-full">Zone-0 Certified</span>
+              <span class="text-xs font-mono text-slate-400">01 / 03</span>
+            </div>
+            <div class="relative h-48 sm:h-56 mb-5 rounded-2xl overflow-hidden bg-black/40">
+              <img src="assets/images/tank-cleaning-robots.webp" alt="MUSHAQ 2.0" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-transparent to-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3 text-xs font-mono text-[#7CAD3E]">Intrinsically Safe Crawler</div>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">MUSHAQ 2.0</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-5">
+                Engineered for heavy sludge liquefaction inside crude oil tanks with 50 BAR jetting pressure.
+              </p>
+              <div class="grid grid-cols-2 gap-2.5 text-xs font-mono">
+                <div class="p-2.5 bg-white/5 rounded-xl border border-white/5">
+                  <div class="text-[#7CAD3E] font-bold">1 - 50 BAR</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Jetting Power</div>
+                </div>
+                <div class="p-2.5 bg-white/5 rounded-xl border border-white/5">
+                  <div class="text-white font-bold">5 - 20 m³/h</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Suction Rate</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: LAGOON MASTER -->
+          <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 lg:p-7 flex flex-col justify-between hover-glow tilt-card relative group transition-all">
+            <div class="flex items-center justify-between mb-5">
+              <span class="px-3 py-1 bg-[#e65c00]/20 border border-[#e65c00]/40 text-[#ff8533] text-xs font-mono font-bold rounded-full">Amphibious Dredger</span>
+              <span class="text-xs font-mono text-slate-400">02 / 03</span>
+            </div>
+            <div class="relative h-48 sm:h-56 mb-5 rounded-2xl overflow-hidden bg-black/40">
+              <img src="assets/images/robot-field-1.webp" alt="LAGOON MASTER" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-transparent to-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3 text-xs font-mono text-[#ff8533]">Submerged Pond Dredger</div>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">LAGOON MASTER</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-5">
+                Amphibious crawler designed for active refinery effluent treatment lagoons and open sludge sumps.
+              </p>
+              <div class="grid grid-cols-2 gap-2.5 text-xs font-mono">
+                <div class="p-2.5 bg-white/5 rounded-xl border border-white/5">
+                  <div class="text-[#ff8533] font-bold">Up to 60 m³/h</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Throughput</div>
+                </div>
+                <div class="p-2.5 bg-white/5 rounded-xl border border-white/5">
+                  <div class="text-white font-bold">5 Meters</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Max Submersion</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: HYDRO-VAC CRAWLER -->
+          <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 lg:p-7 flex flex-col justify-between hover-glow tilt-card relative group transition-all">
+            <div class="flex items-center justify-between mb-5">
+              <span class="px-3 py-1 bg-[#0284C7]/20 border border-[#0284C7]/40 text-[#38bdf8] text-xs font-mono font-bold rounded-full">NDT Ultrasonic UT</span>
+              <span class="text-xs font-mono text-slate-400">03 / 03</span>
+            </div>
+            <div class="relative h-48 sm:h-56 mb-5 rounded-2xl overflow-hidden bg-black/40">
+              <img src="assets/images/robot-field-2.webp" alt="HYDRO-VAC CRAWLER" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-transparent to-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3 text-xs font-mono text-[#38bdf8]">Inspection & Vacuum Crawler</div>
+            </div>
+            <div>
+              <h3 class="text-2xl font-bold text-white mb-2">HYDRO-VAC CRAWLER</h3>
+              <p class="text-xs text-slate-300 leading-relaxed mb-5">
+                Integrated floor plate thickness UT scanner combined with high-flow 35 m³/h vacuum extraction.
+              </p>
+              <div class="grid grid-cols-2 gap-2.5 text-xs font-mono">
+                <div class="p-2.5 bg-white/5 rounded-xl border border-white/5">
+                  <div class="text-[#38bdf8] font-bold">35 m³/h</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Vacuum Flow</div>
+                </div>
+                <div class="p-2.5 bg-white/5 rounded-xl border border-white/5">
+                  <div class="text-white font-bold">UT Corrosion</div>
+                  <div class="text-[10px] text-slate-400 mt-0.5">Floor Plate Scan</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- =========================================================================
          SECTION 4: REAL FIELD OPERATIONS GALLERY
          ========================================================================= -->
-    <section id="field-operations" class="py-12 md:py-16 section-slate-tint border-t border-slate-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="field-operations" class="scroll-mt-28 sm:scroll-mt-36 py-16 md:py-24 bg-[#0A1924] border-t border-[#173042] relative overflow-hidden">
+      <!-- Dark immersive background elements -->
+      <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-[#7CAD3E] rounded-full mix-blend-screen filter blur-[150px] opacity-10 pointer-events-none"></div>
+      <div class="absolute bottom-0 left-0 -mb-20 -ml-20 w-96 h-96 bg-[#0284C7] rounded-full mix-blend-screen filter blur-[150px] opacity-10 pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div class="text-center max-w-2xl mx-auto mb-10">
-          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#7CAD3E] mb-1 font-bold">
-            <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+        <div class="text-center max-w-2xl mx-auto mb-14">
+          <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#7CAD3E] mb-2 font-bold reveal-up">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
             <span>Field Verification</span>
           </div>
-          <h2 class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight reveal-blur delay-100">
             Robots in Active Operations
           </h2>
-          <p class="text-xs sm:text-sm text-[#475569] mt-2 font-medium">
-            Real photos from Arham Oil refinery deployments, storage tank cleanouts, and heavy sludge processing.
+          <p class="text-base text-slate-400 mt-4 font-medium reveal-up delay-200">
+            Real photos from Arham Oil refinery deployments, storage tank cleanouts, and heavy sludge processing. Click to explore.
           </p>
         </div>
 
         <!-- Clean 3x2 Photo Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-up delay-300">
           
-          <div class="photo-card-light h-64 rounded-xl group" onclick="ArhamApp.openLightbox('assets/images/robot-real-2.webp', 'Interior Crude Oil Storage Tank Desludging Operations')">
-            <img src="assets/images/robot-real-2.webp" alt="Crude Oil Tank Cleaning">
-            <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.95)] via-transparent to-transparent opacity-85 group-hover:opacity-95 transition-all p-5 flex flex-col justify-end">
-              <span class="photo-badge-dark mb-1.5">In-Tank Operation</span>
-              <h4 class="text-base font-bold text-white">Crude Oil Sludge Liquefaction</h4>
-              <p class="text-xs text-[#CBD5E1] mt-0.5">High-pressure upper nozzles breaking hardened bitumen mounds.</p>
+          <div class="photo-card-light h-72 rounded-2xl group hover-glow hover-zoom-container cursor-pointer bg-[#0A1924]" onclick="ArhamApp.openLightbox('assets/images/robot-real-2.webp', 'Interior Crude Oil Storage Tank Desludging Operations')">
+            <img src="assets/images/robot-real-2.webp" alt="Crude Oil Tank Cleaning" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-[#0A1924]/60 to-transparent opacity-80 group-hover:opacity-95 transition-all p-6 flex flex-col justify-end">
+              <span class="inline-block px-2.5 py-1 bg-[#7CAD3E] text-[#0A1924] text-[10px] font-bold uppercase tracking-wider rounded w-max mb-2">In-Tank Operation</span>
+              <h4 class="text-lg font-bold text-white drop-shadow-md">Crude Sludge Liquefaction</h4>
+              <p class="text-xs text-slate-300 mt-1">High-pressure upper nozzles breaking hardened bitumen mounds.</p>
             </div>
           </div>
 
-          <div class="photo-card-light h-64 rounded-xl group" onclick="ArhamApp.openLightbox('assets/images/robot-real-1.webp', 'Refinery Personnel Outside Tank Manway During Remote Cleaning')">
-            <img src="assets/images/robot-real-1.webp" alt="Remote Control Crew">
-            <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.95)] via-transparent to-transparent opacity-85 group-hover:opacity-95 transition-all p-5 flex flex-col justify-end">
-              <span class="photo-badge-dark mb-1.5">Non-Man Entry</span>
-              <h4 class="text-base font-bold text-white">Zero Confined Space Exposure</h4>
-              <p class="text-xs text-[#CBD5E1] mt-0.5">Operators controlling the robotic crawler remotely outside the hazardous bund wall.</p>
+          <div class="photo-card-light h-72 rounded-2xl group hover-glow hover-zoom-container cursor-pointer bg-[#0A1924]" onclick="ArhamApp.openLightbox('assets/images/robot-real-1.webp', 'Refinery Personnel Outside Tank Manway During Remote Cleaning')">
+            <img src="assets/images/robot-real-1.webp" alt="Remote Control Crew" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-[#0A1924]/60 to-transparent opacity-80 group-hover:opacity-95 transition-all p-6 flex flex-col justify-end">
+              <span class="inline-block px-2.5 py-1 bg-[#7CAD3E] text-[#0A1924] text-[10px] font-bold uppercase tracking-wider rounded w-max mb-2">Non-Man Entry</span>
+              <h4 class="text-lg font-bold text-white drop-shadow-md">Zero Exposure Zones</h4>
+              <p class="text-xs text-slate-300 mt-1">Operators controlling the crawler remotely outside the hazardous bund wall.</p>
             </div>
           </div>
 
-          <div class="photo-card-light h-64 rounded-xl group" onclick="ArhamApp.openLightbox('assets/images/robot-real-3.webp', 'Armored Umbilical Tether and Slurry Discharge Assembly')">
-            <img src="assets/images/robot-real-3.webp" alt="Umbilical Tether">
-            <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.95)] via-transparent to-transparent opacity-85 group-hover:opacity-95 transition-all p-5 flex flex-col justify-end">
-              <span class="photo-badge-dark mb-1.5">Heavy Slurry Line</span>
-              <h4 class="text-base font-bold text-white">100m Armored Umbilical Tether</h4>
-              <p class="text-xs text-[#CBD5E1] mt-0.5">Simultaneous delivery of 15 HP hydraulic power and 20 m³/h slurry vacuum return.</p>
+          <div class="photo-card-light h-72 rounded-2xl group hover-glow hover-zoom-container cursor-pointer bg-[#0A1924]" onclick="ArhamApp.openLightbox('assets/images/robot-real-3.webp', 'Armored Umbilical Tether and Slurry Discharge Assembly')">
+            <img src="assets/images/robot-real-3.webp" alt="Umbilical Tether" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-[#0A1924]/60 to-transparent opacity-80 group-hover:opacity-95 transition-all p-6 flex flex-col justify-end">
+              <span class="inline-block px-2.5 py-1 bg-[#7CAD3E] text-[#0A1924] text-[10px] font-bold uppercase tracking-wider rounded w-max mb-2">Heavy Slurry Line</span>
+              <h4 class="text-lg font-bold text-white drop-shadow-md">Armored Umbilical Tether</h4>
+              <p class="text-xs text-slate-300 mt-1">Simultaneous delivery of 15 HP hydraulic power and 20 m³/h vacuum return.</p>
             </div>
           </div>
 
-          <div class="photo-card-light h-64 rounded-xl group" onclick="ArhamApp.openLightbox('assets/images/robot-field-1.webp', 'Petrochemical Effluent Lagoon Dredging Project')">
-            <img src="assets/images/robot-field-1.webp" alt="Effluent Lagoon Dredging">
-            <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.95)] via-transparent to-transparent opacity-85 group-hover:opacity-95 transition-all p-5 flex flex-col justify-end">
-              <span class="photo-badge-dark mb-1.5">Lagoon Cleaning</span>
-              <h4 class="text-base font-bold text-white">Open Sump & Lagoon Desludging</h4>
-              <p class="text-xs text-[#CBD5E1] mt-0.5">Eliminating H2S vapor danger during industrial wastewater sediment removal.</p>
+          <div class="photo-card-light h-72 rounded-2xl group hover-glow hover-zoom-container cursor-pointer bg-[#0A1924]" onclick="ArhamApp.openLightbox('assets/images/robot-field-1.webp', 'Petrochemical Effluent Lagoon Dredging Project')">
+            <img src="assets/images/robot-field-1.webp" alt="Effluent Lagoon Dredging" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-[#0A1924]/60 to-transparent opacity-80 group-hover:opacity-95 transition-all p-6 flex flex-col justify-end">
+              <span class="inline-block px-2.5 py-1 bg-[#7CAD3E] text-[#0A1924] text-[10px] font-bold uppercase tracking-wider rounded w-max mb-2">Lagoon Cleaning</span>
+              <h4 class="text-lg font-bold text-white drop-shadow-md">Open Sump Desludging</h4>
+              <p class="text-xs text-slate-300 mt-1">Eliminating H2S vapor danger during industrial wastewater sediment removal.</p>
             </div>
           </div>
 
-          <div class="photo-card-light h-64 rounded-xl group" onclick="ArhamApp.openLightbox('assets/images/robot-field-2.webp', 'Full Mobile Sludge Centrifuge and Recovery Plant Deployment')">
-            <img src="assets/images/robot-field-2.webp" alt="Turnaround Centrifuge Rig">
-            <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.95)] via-transparent to-transparent opacity-85 group-hover:opacity-95 transition-all p-5 flex flex-col justify-end">
-              <span class="photo-badge-dark mb-1.5">Turnkey Deployment</span>
-              <h4 class="text-base font-bold text-white">RoboVerse 3-Phase Separation</h4>
-              <p class="text-xs text-[#CBD5E1] mt-0.5">Mobile centrifuge plant separating recovered oil, clean water, and dry cake.</p>
+          <div class="photo-card-light h-72 rounded-2xl group hover-glow hover-zoom-container cursor-pointer bg-[#0A1924]" onclick="ArhamApp.openLightbox('assets/images/robot-field-2.webp', 'Full Mobile Sludge Centrifuge and Recovery Plant Deployment')">
+            <img src="assets/images/robot-field-2.webp" alt="Turnaround Centrifuge Rig" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-[#0A1924]/60 to-transparent opacity-80 group-hover:opacity-95 transition-all p-6 flex flex-col justify-end">
+              <span class="inline-block px-2.5 py-1 bg-[#7CAD3E] text-[#0A1924] text-[10px] font-bold uppercase tracking-wider rounded w-max mb-2">Turnkey Deployment</span>
+              <h4 class="text-lg font-bold text-white drop-shadow-md">RoboVerse 3-Phase Plant</h4>
+              <p class="text-xs text-slate-300 mt-1">Mobile centrifuge plant separating recovered oil, clean water, and dry cake.</p>
             </div>
           </div>
 
-          <div class="photo-card-light h-64 rounded-xl group" onclick="ArhamApp.openLightbox('assets/images/robot-cutout.webp', 'Crawler Mechanical Anatomy and Track Assembly')">
-            <img src="assets/images/robot-cutout.webp" alt="Robot Cutout" class="object-contain p-3 bg-[#F8FAFC]">
-            <div class="absolute inset-0 bg-gradient-to-t from-[rgba(15,23,42,0.95)] via-transparent to-transparent opacity-85 group-hover:opacity-95 transition-all p-5 flex flex-col justify-end">
-              <span class="photo-badge-dark mb-1.5">Hardware Engineering</span>
-              <h4 class="text-base font-bold text-white">Intrinsically Safe Architecture</h4>
-              <p class="text-xs text-[#CBD5E1] mt-0.5">Compact 30" chassis designed for fast deployment through standard manholes.</p>
+          <div class="photo-card-light h-72 rounded-2xl group hover-glow hover-zoom-container cursor-pointer bg-white" onclick="ArhamApp.openLightbox('assets/images/robot-cutout.webp', 'Crawler Mechanical Anatomy and Track Assembly')">
+            <img src="assets/images/robot-cutout.webp" alt="Robot Cutout" class="w-full h-full object-contain p-6 mix-blend-multiply">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0A1924] via-[#0A1924]/80 to-transparent opacity-90 group-hover:opacity-95 transition-all p-6 flex flex-col justify-end">
+              <span class="inline-block px-2.5 py-1 bg-[#7CAD3E] text-[#0A1924] text-[10px] font-bold uppercase tracking-wider rounded w-max mb-2">Hardware Engineering</span>
+              <h4 class="text-lg font-bold text-white drop-shadow-md">Intrinsically Safe Crawler</h4>
+              <p class="text-xs text-slate-300 mt-1">Compact 30" chassis designed for fast deployment through standard manholes.</p>
             </div>
           </div>
 
@@ -541,7 +702,7 @@
     <!-- =========================================================================
          SECTION 5: ENGINEERING BENCHMARK
          ========================================================================= -->
-    <section id="technology" class="py-12 md:py-16 section-blue-tint border-t border-slate-200">
+    <section id="technology" class="scroll-mt-28 sm:scroll-mt-36 py-12 md:py-16 section-blue-tint border-t border-slate-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="text-center max-w-2xl mx-auto mb-10">
@@ -549,12 +710,12 @@
             <i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i>
             <span>Engineering Benchmark</span>
           </div>
-          <h2 class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight">
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-[#0F172A] tracking-tight reveal-up">
             Robotics vs Traditional Manual Entry
           </h2>
         </div>
 
-        <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
+        <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover-zoom-container hover-glow">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs sm:text-sm">
               <thead class="bg-[#173042] text-white text-xs uppercase font-mono">
@@ -565,27 +726,27 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-slate-200">
-                <tr class="hover:bg-slate-50">
+                <tr class="hover:bg-slate-50 stagger-table-row" style="animation-delay: 100ms;">
                   <td class="p-4 font-bold text-[#0F172A]">Personnel Safety & Risk</td>
                   <td class="p-4 text-[#475569]">High fatality risk; workers enter toxic vapor atmospheres (H2S, LEL)</td>
                   <td class="p-4 font-bold text-[#16A34A]">100% Non-Man Entry; Zero human entry inside tank</td>
                 </tr>
-                <tr class="hover:bg-slate-50">
+                <tr class="hover:bg-slate-50 stagger-table-row" style="animation-delay: 200ms;">
                   <td class="p-4 font-bold text-[#0F172A]">Turnaround Downtime</td>
                   <td class="p-4 text-[#475569]">14 to 30+ days of costly refinery downtime</td>
                   <td class="p-4 font-bold text-[#16A34A]">3 to 7 days (40% to 60% faster turnaround)</td>
                 </tr>
-                <tr class="hover:bg-slate-50">
+                <tr class="hover:bg-slate-50 stagger-table-row" style="animation-delay: 300ms;">
                   <td class="p-4 font-bold text-[#0F172A]">Oil Resource Recovery</td>
                   <td class="p-4 text-[#475569]">Sludge dumped into hazardous pits or open lagoons</td>
                   <td class="p-4 font-bold text-[#16A34A]">95%+ reusable oil recovered via 3-phase centrifuge</td>
                 </tr>
-                <tr class="hover:bg-slate-50">
+                <tr class="hover:bg-slate-50 stagger-table-row" style="animation-delay: 400ms;">
                   <td class="p-4 font-bold text-[#0F172A]">Operational Continuity</td>
                   <td class="p-4 text-[#475569]">Requires complete tank drainage and prolonged aeration</td>
                   <td class="p-4 font-bold text-[#16A34A]">Online mechanical desludging without facility shutdown</td>
                 </tr>
-                <tr class="hover:bg-slate-50">
+                <tr class="hover:bg-slate-50 stagger-table-row" style="animation-delay: 500ms;">
                   <td class="p-4 font-bold text-[#0F172A]">Regulatory Compliance</td>
                   <td class="p-4 text-[#475569]">Severe compliance liability under OSHA, OISD, and CPCB</td>
                   <td class="p-4 font-bold text-[#16A34A]">Full ATEX Zone-0 & ISO 14001 ESG excellence</td>
@@ -601,21 +762,27 @@
     <!-- =========================================================================
          SECTION 6: TANK TURNAROUND & ROI CALCULATOR
          ========================================================================= -->
-    <section id="calculator" class="py-12 md:py-16 section-dark-stage relative border-t border-slate-700">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="calculator" class="scroll-mt-28 sm:scroll-mt-36 py-16 md:py-24 relative overflow-hidden bg-[#173042] border-t-4 border-[#7CAD3E]">
+      <!-- Background Effects -->
+      <div class="absolute inset-0 z-0 bg-zoom-hover opacity-20 pointer-events-none">
+        <img src="assets/images/tank-cleaning-robots.webp" alt="Background" class="w-full h-full object-cover parallax-img" data-parallax-speed="0.1">
+        <div class="absolute inset-0 bg-gradient-to-br from-[#173042] via-[#0A1924]/90 to-[#7CAD3E]/40"></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           
-          <div class="lg:col-span-5">
-            <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#7CAD3E] mb-1 font-bold">
-              <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+          <div class="lg:col-span-5 reveal-blur">
+            <div class="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#7CAD3E] mb-2 font-bold px-3 py-1 bg-black/30 rounded-md border border-[#7CAD3E]/30">
+              <i data-lucide="calculator" class="w-4 h-4"></i>
               <span>Savings Estimator</span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-[1.1] mb-4 drop-shadow-lg">
               Tank Cleaning ROI & Turnaround Calculator
             </h2>
-            <p class="text-xs sm:text-sm text-[#AFCAE2] mt-2 leading-relaxed font-medium">
-              Estimate your downtime reduction, sludge extraction volume, and recovered oil revenue when using Arham Oil’s robotic fleet.
+            <p class="text-sm sm:text-base text-[#AFCAE2] mt-2 leading-relaxed font-medium mb-8">
+              Estimate your downtime reduction, sludge extraction volume, and recovered oil revenue when using Arham Oil’s robotic fleet compared to manual entry.
             </p>
 
             <div class="mt-6 space-y-5">
@@ -688,7 +855,7 @@
     <!-- =========================================================================
          SECTION 7: CONTACT & TECHNICAL CONSULTATION
          ========================================================================= -->
-    <section id="contact" class="py-12 md:py-16 bg-white border-t border-slate-200">
+    <section id="contact" class="scroll-mt-28 sm:scroll-mt-36 py-12 md:py-16 bg-white border-t border-slate-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -698,10 +865,10 @@
               <i data-lucide="mail" class="w-3.5 h-3.5"></i>
               <span>Engineering Support</span>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-3">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#0F172A] tracking-tight mb-3 reveal-up">
               Request a Technical Consultation
             </h2>
-            <p class="text-xs sm:text-sm text-[#475569] leading-relaxed mb-6 font-medium">
+            <p class="text-xs sm:text-sm text-[#475569] leading-relaxed mb-6 font-medium reveal-up delay-100">
               Connect directly with our petroleum engineers to review tank dimensions, sludge viscosity, and turnaround windows.
             </p>
 
@@ -840,7 +1007,7 @@
         <span>Technical Dossier</span>
       </div>
       <h3 class="text-xl font-bold text-[#0F172A] mb-1.5">Download Robotics Brochure</h3>
-      <p class="text-xs text-[#475569] mb-4">
+      <p class="text-xs text-[#475569] mb-4 reveal-up delay-100">
         Get immediate access to full dimensional CAD blueprints, ATEX certifications, and client case studies for MUSHAQ 2.0.
       </p>
 
@@ -869,7 +1036,7 @@
           <i data-lucide="check" class="w-5 h-5"></i>
         </div>
         <h4 class="text-base font-bold text-[#0F172A] mb-1">Brochure Dispatched!</h4>
-        <p class="text-xs text-[#475569]">
+        <p class="text-xs text-[#475569] reveal-up delay-100">
           We have sent the technical datasheet to your email.
         </p>
       </div>
@@ -887,5 +1054,70 @@
       }
     });
   </script>
+
+  <!-- =========================================================================
+       FULL TECHNICAL SPECIFICATIONS MODAL (SPACIOUS & DE-CLUTTERED)
+       ========================================================================= -->
+  <div id="full-specs-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl hidden flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 relative my-auto animate-reveal-fast">
+      
+      <!-- Modal Header -->
+      <div class="bg-[#0A1924] text-white p-6 sm:p-8 flex items-start justify-between border-b border-[#173042] relative">
+        <div>
+          <div class="flex items-center gap-2 text-xs font-mono text-[#7CAD3E] uppercase tracking-wider mb-1 font-bold">
+            <i data-lucide="cpu" class="w-4 h-4"></i>
+            <span>Certified Technical Datasheet</span>
+          </div>
+          <h3 id="modal-robot-title" class="text-2xl sm:text-4xl font-extrabold text-white">MUSHAQ 2.0 Specifications</h3>
+          <p id="modal-robot-tagline" class="text-xs text-slate-300 font-mono mt-1">Intrinsically Safe ATEX Zone-0 Tank Cleaning Crawler</p>
+        </div>
+        <button id="modal-specs-close" class="p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-all">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Modal Subtabs Navigation -->
+      <div class="bg-slate-100 px-6 pt-4 border-b border-slate-200 flex gap-2 overflow-x-auto scrollbar-thin">
+        <button class="spec-subtab-trigger active px-4 py-2.5 rounded-t-xl text-xs font-bold transition-all" data-subtab="dimensions">
+          <i data-lucide="ruler" class="w-4 h-4 inline mr-1.5"></i>
+          <span>Dimensions & Build</span>
+        </button>
+        <button class="spec-subtab-trigger px-4 py-2.5 rounded-t-xl text-xs font-bold transition-all" data-subtab="hydraulics">
+          <i data-lucide="droplet" class="w-4 h-4 inline mr-1.5"></i>
+          <span>Hydraulics & Jetting</span>
+        </button>
+        <button class="spec-subtab-trigger px-4 py-2.5 rounded-t-xl text-xs font-bold transition-all" data-subtab="safety">
+          <i data-lucide="shield" class="w-4 h-4 inline mr-1.5"></i>
+          <span>ATEX & Safety</span>
+        </button>
+        <button class="spec-subtab-trigger px-4 py-2.5 rounded-t-xl text-xs font-bold transition-all" data-subtab="vision">
+          <i data-lucide="eye" class="w-4 h-4 inline mr-1.5"></i>
+          <span>LiDAR & Vision</span>
+        </button>
+        <button class="spec-subtab-trigger px-4 py-2.5 rounded-t-xl text-xs font-bold transition-all" data-subtab="features">
+          <i data-lucide="check-circle" class="w-4 h-4 inline mr-1.5"></i>
+          <span>Capabilities & Apps</span>
+        </button>
+      </div>
+
+      <!-- Modal Content Area -->
+      <div id="modal-specs-content" class="p-6 sm:p-8 min-h-[300px]">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-slate-50 px-6 py-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span class="text-xs font-mono text-slate-500">ISO 9001 / ATEX Zone-0 Verification Certificate</span>
+        <div class="flex gap-3 w-full sm:w-auto">
+          <button class="btn-request-brochure bg-[#7CAD3E] hover:bg-[#6b9933] text-white px-6 py-2.5 rounded-full font-bold text-xs uppercase flex items-center justify-center gap-2 shadow-md">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Download Spec PDF</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </body>
 </html>

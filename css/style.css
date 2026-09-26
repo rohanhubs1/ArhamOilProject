@@ -550,3 +550,316 @@ input[type="range"]::-webkit-slider-thumb:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+/* ==========================================================================
+   PREMIUM ANIMATIONS (Added per request)
+   ========================================================================== */
+
+/* Fade & Slide Up Reveal (Guaranteed Visible) */
+.reveal-up {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delay modifiers for staggered reveals */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+.delay-400 { transition-delay: 400ms; }
+
+/* Parallax Background / Image scale effect */
+.parallax-img-container {
+  overflow: hidden;
+}
+.parallax-img {
+  transition: transform 0.5s ease-out;
+  will-change: transform;
+}
+
+/* Image Glow on Hover */
+.hover-glow {
+  transition: box-shadow 0.4s ease, transform 0.4s ease;
+}
+.hover-glow:hover {
+  box-shadow: 0 15px 40px -10px rgba(124, 173, 62, 0.4);
+  transform: translateY(-4px);
+}
+
+/* Image Zoom on Hover (For Gallery/Cards) */
+.hover-zoom-container {
+  overflow: hidden;
+}
+.hover-zoom-container img {
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.hover-zoom-container:hover img {
+  transform: scale(1.05);
+}
+
+/* Smooth Navbar Transitions */
+header .group {
+  transition: all 0.3s ease;
+}
+header .group:hover {
+  transform: translateY(-2px);
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-up {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .parallax-img, .hover-glow, .hover-zoom-container img, header .group {
+    transition: none;
+    transform: none;
+  }
+  .hover-glow:hover, .hover-zoom-container:hover img, header .group:hover {
+    transform: none;
+  }
+}
+
+
+/* ==========================================================================
+   ADVANCED UNIBOSE-STYLE ANIMATIONS
+   ========================================================================== */
+
+/* Enhanced Reveal with Blur (Guaranteed Visible) */
+.reveal-blur {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-blur.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+/* Auto Horizontal Scrolling Marquee */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  width: 100%;
+}
+.marquee-container::before, .marquee-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 15%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-card) 0%, transparent 100%);
+}
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-card) 0%, transparent 100%);
+}
+.marquee-content {
+  display: inline-flex;
+  gap: 4rem;
+  animation: marquee 25s linear infinite;
+  will-change: transform;
+}
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Image Hotspots (Show Info on Hover) */
+.hotspot-container {
+  position: relative;
+  display: inline-block;
+}
+.hotspot {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: var(--accent-lime);
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 0 0 rgba(124, 173, 62, 0.4);
+  animation: pulse-hotspot 2s infinite;
+  transition: all 0.3s ease;
+}
+.hotspot::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border: 1px solid var(--accent-lime);
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: pulse-hotspot-ring 2s infinite;
+}
+.hotspot:hover {
+  transform: scale(1.2);
+  background: #fff;
+  border: 2px solid var(--accent-lime);
+}
+.hotspot-info {
+  position: absolute;
+  top: 130%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(23, 48, 66, 0.95);
+  backdrop-filter: blur(8px);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 11;
+  pointer-events: none;
+}
+.hotspot-info::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: rgba(23, 48, 66, 0.95);
+}
+.hotspot:hover .hotspot-info {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+@keyframes pulse-hotspot {
+  0% { box-shadow: 0 0 0 0 rgba(124, 173, 62, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(124, 173, 62, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 173, 62, 0); }
+}
+@keyframes pulse-hotspot-ring {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Background Zoom Image Hover (For Hero / Panels) */
+.bg-zoom-hover {
+  overflow: hidden;
+}
+.bg-zoom-hover > img {
+  transition: transform 10s ease-out;
+}
+.bg-zoom-hover:hover > img {
+  transform: scale(1.1);
+}
+
+
+/* ==========================================================================
+   FURTHER HIGH-END ANIMATIONS
+   ========================================================================== */
+
+/* Fast Reveal for Tabs and Stats */
+@keyframes revealFast {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-reveal-fast {
+  animation: revealFast 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+/* Navbar Initial Slide Down */
+@keyframes slideDownNav {
+  0% { transform: translateY(-100%); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.nav-slide-down {
+  animation: slideDownNav 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Table Row Stagger Animations */
+.stagger-table-row {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-reveal-fast, .nav-slide-down, .stagger-table-row {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   ADVANCED GSAP & SCROLLTRIGGER STYLES
+   ========================================================================== */
+
+/* Scrolled Navbar Shrink */
+header.scrolled-nav > div {
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.15) !important;
+  transform: scale(0.98);
+}
+
+/* 3D Tilt Card Smooth Reset */
+.tilt-card {
+  transition: transform 0.2s ease-out, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Magnetic Button Physics */
+.btn-magnetic {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+  will-change: transform;
+}
+
+/* Modal Subtab Active State */
+#full-specs-modal .spec-subtab-trigger.active {
+  background-color: var(--bg-card);
+  color: var(--accent-lime);
+  border-bottom: 2px solid var(--accent-lime);
+}
+
+/* Cursor Ambient Glow (Dark Sections) */
+#cursor-glow {
+  position: fixed;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 173, 62, 0.15) 0%, rgba(2, 132, 199, 0.05) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: 40;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out, opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-card, .btn-magnetic, #cursor-glow {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
